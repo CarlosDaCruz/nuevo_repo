@@ -1,0 +1,30 @@
+name: Validar Commit
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  validar-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Verificar si hay commits
+      run: |
+        if [[ -n "$(git log -1 --pretty=%B)" ]]; then
+          echo "::set-output name=commit::true"
+        else
+          echo "::set-output name=commit::false"
+        fi
+      id: commit-check
+
+    - name: Asignar clasificación
+      run: |
+        if [[ "${{ steps.commit-check.outputs.commit }}" == "true" ]]; then
+          echo "La clasificación es 5"
+          # Aquí puedes agregar lógica adicional si es necesario
+        else
+          echo "La clasificación es 0"
+          # Aquí puedes agregar lógica adicional si es necesario
+        fi
